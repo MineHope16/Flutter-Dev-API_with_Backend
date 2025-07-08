@@ -31,12 +31,12 @@ class ApiManager {
 
         AppLogger.d(data);
 
-        pdata = (data["products"] as List).map((product) {
+        pdata = (data as List).map((product) {
           return ProductDataModel(
-            id: product['id'].toString(),
-            name: product['pname'],
-            price: product['pprice'],
-            desc: product['pdesc'],
+            id: product['_id'] ?? "",
+            name: product['pname'] ?? "",
+            price: product['pprice'] ?? "",
+            desc: product['pdesc'] ?? "",
           );
         }).toList();
 
@@ -51,15 +51,20 @@ class ApiManager {
     }
   }
 
-  static void put(String endpoint, Map<String, dynamic> bodyb) async {
+  static Future<void> update(String endpoint, Map bodyb) async {
     AppLogger.i(endpoint);
     AppLogger.i(bodyb);
+    AppLogger.d(jsonEncode(bodyb));
 
     try {
-      final response = await http.put(Uri.parse(endpoint), body: bodyb);
+      AppLogger.i('Initiated');
+      final response = await http.patch(
+        Uri.parse(endpoint),
+        body: jsonEncode(bodyb),
+      );
       AppLogger.i(response.statusCode);
       if (response.statusCode == 200) {
-        AppLogger.d(jsonDecode(response.body));
+        AppLogger.d(response.body);
       } else {
         AppLogger.e(response.statusCode);
       }
@@ -70,7 +75,7 @@ class ApiManager {
 
   static void delete(String endpoint) async {
     try {
-      final response = await http.post(Uri.parse(endpoint));
+      final response = await http.delete(Uri.parse(endpoint));
 
       if (response.statusCode == 200) {
         AppLogger.d(response.body);

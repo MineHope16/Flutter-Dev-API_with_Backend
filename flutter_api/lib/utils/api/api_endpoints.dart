@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field
 
+import 'package:flutter_api/utils/logger/app_logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiEndpoints {
@@ -19,8 +20,9 @@ class ApiEndpoints {
     return "$_baseUrl$_getProduct";
   }
 
-  static String updateProduct(String index) {
-    return "$_baseUrl$_updateProduct/$index";
+  static String updateProduct(String id) {
+    AppLogger.i("$_baseUrl$_updateProduct/$id");
+    return "$_baseUrl$_updateProduct/$id";
   }
 
   static String deleteProduct(String index) {

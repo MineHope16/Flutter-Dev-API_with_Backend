@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api/model/product_data_model.dart';
-import 'package:flutter_api/screens/update_screen.dart';
 import 'package:flutter_api/utils/api/api_endpoints.dart';
 import 'package:flutter_api/utils/api/api_manager.dart';
 import 'package:flutter_api/utils/widgets/text_field.dart';
@@ -64,19 +63,14 @@ class _EditScreenState extends State<EditScreen> {
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
-                  onPressed: () {
-                    ApiManager.put(
+                  onPressed: () async {
+                    await ApiManager.update(
                       ApiEndpoints.updateProduct(widget.product.id),
                       {
                         "pname": nameController.text,
                         "pprice": priceController.text,
                         "pdesc": descController.text,
                       },
-                    );
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => UpdateScreen()),
                     );
                   },
                   child: const Text("Update Product"),
